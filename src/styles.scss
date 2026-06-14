@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    /* Colors */
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #10b981;
+
+    --background-color: #f8fafc;
+    --surface-color: #ffffff;
+
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+
+    --border-color: #e2e8f0;
+
+    --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+
+    /* Typography */
+    --font-family: "Inter", sans-serif;
+
+    /* PrimeNG mapping */
+    --p-primary-color: var(--primary-color);
+    --p-primary-contrast-color: #ffffff;
+    --p-primary-hover-color: var(--primary-hover);
+    --p-content-background: var(--surface-color);
+    --p-text-color: var(--text-primary);
+    --p-text-muted-color: var(--text-secondary);
+    --p-content-border-color: var(--border-color);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "primeicons/primeicons.css";
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
