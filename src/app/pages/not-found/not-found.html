@@ -1,1 +1,1108 @@
-<p>not-found works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rentora — Auth Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        primaryHover: '#1D4ED8',
+                        bgApp: '#F8FAFC',
+                        cardBg: '#FFFFFF',
+                        textPrimary: '#0F172A',
+                        textSecondary: '#64748B',
+                        borderC: '#E2E8F0',
+                        success: '#10B981',
+                        error: '#EF4444'
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    boxShadow: { soft: '0 10px 34px -10px rgba(15,23,42,.16), 0 2px 10px -4px rgba(15,23,42,.08)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --error: #EF4444;
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #0B1120;
+        }
+
+        /* ---------- Prototype canvas (Figma-style dotted stage) ---------- */
+        .canvas {
+            background-image: radial-gradient(rgba(255, 255, 255, .10) 1px, transparent 1px);
+            background-size: 22px 22px;
+            background-color: #0B1120;
+        }
+
+        .frame-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #1E293B;
+            color: #CBD5E1;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 999px;
+            letter-spacing: .02em;
+        }
+
+        /* ---------- Design-token based component classes ---------- */
+        .field-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .field-wrap {
+            position: relative;
+        }
+
+        .field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .field-input {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: var(--text-primary);
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 13px 14px 13px 44px;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .field-input::placeholder {
+            color: #94A3B8;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+        }
+
+        .field-input.with-toggle {
+            padding-right: 44px;
+        }
+
+        .field-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+        }
+
+        .field-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 12px;
+            padding: 13px 16px;
+            cursor: pointer;
+            transition: all .15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-google {
+            background: #fff;
+            color: var(--text-primary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-google:hover {
+            background: #F8FAFC;
+            border-color: #CBD5E1;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: #EFF6FF;
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .auth-card {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 10px 34px -10px rgba(15, 23, 42, .16), 0 2px 10px -4px rgba(15, 23, 42, .08);
+            border: 1px solid #F1F5F9;
+        }
+
+        .chk {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            transition: all .15s;
+        }
+
+        .chk:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .chk:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin: 20px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .type-card {
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all .15s;
+            position: relative;
+        }
+
+        .type-card:hover {
+            border-color: #94A3B8;
+        }
+
+        .type-card.selected {
+            border-color: var(--primary);
+            background: #EFF6FF;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+        }
+
+        .type-card .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        .type-card.selected .dot {
+            border-color: var(--primary);
+        }
+
+        .type-card.selected .dot::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: block;
+            margin: 3px;
+        }
+
+        .otp-box {
+            width: 48px;
+            height: 54px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            transition: all .15s;
+        }
+
+        .otp-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+        }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            border-radius: 12px;
+            padding: 11px 14px;
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            color: #047857;
+            border: 1px solid #A7F3D0;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2.5px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ---------- Floating listing cards (signature illustration) ---------- */
+        @keyframes floaty {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(var(--rot, 0deg));
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(var(--rot, 0deg));
+            }
+        }
+
+        .floaty {
+            animation: floaty 6.5s ease-in-out infinite;
+        }
+
+        .floaty-delay {
+            animation-delay: 1.4s;
+            animation-duration: 7.5s;
+        }
+
+        /* ---------- Device frame mechanics ---------- */
+        .frame {
+            display: flex;
+            width: 1180px;
+            min-height: 740px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .55);
+        }
+
+        .branding-panel {
+            width: 35%;
+            flex-shrink: 0;
+        }
+
+        .form-panel {
+            width: 65%;
+        }
+
+        .desktop-only {
+            display: flex;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        .device-mobile .frame {
+            width: 390px;
+            min-height: 780px;
+            flex-direction: column;
+            border-radius: 36px;
+            border: 8px solid #0B1120;
+            outline: 2px solid #1E293B;
+        }
+
+        .device-mobile .branding-panel {
+            display: none;
+        }
+
+        .device-mobile .form-panel {
+            width: 100%;
+        }
+
+        .device-mobile .desktop-only {
+            display: none !important;
+        }
+
+        .device-mobile .mobile-only {
+            display: flex;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .tab-btn {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 999px;
+            color: #94A3B8;
+            cursor: pointer;
+            transition: all .15s;
+            border: none;
+            background: none;
+        }
+
+        .tab-btn.active {
+            background: #fff;
+            color: #0F172A;
+        }
+
+        .tab-btn:not(.active):hover {
+            color: #E2E8F0;
+        }
+
+        .dev-btn {
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: #94A3B8;
+            cursor: pointer;
+            border: none;
+            background: none;
+            display: flex;
+        }
+
+        .dev-btn.active {
+            background: #1E293B;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="canvas">
+
+    <!-- ============================================================ -->
+    <!-- PROTOTYPE TOOLBAR (tooling chrome — not part of the product)  -->
+    <!-- ============================================================ -->
+    <div class="sticky top-0 z-30 bg-[#0B1120]/95 backdrop-blur border-b border-white/10">
+        <div class="max-w-[1320px] mx-auto px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-white font-semibold text-sm">
+                    R</div>
+                <div>
+                    <div class="text-white text-sm font-medium leading-none">Rentora · Auth Design System</div>
+                    <div class="text-[11px] text-slate-400 mt-1">Core flow — more screens coming next</div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 bg-[#161F32] p-1 rounded-full">
+                <button class="tab-btn active" data-screen="login" onclick="setScreen('login')">Login</button>
+                <button class="tab-btn" data-screen="register" onclick="setScreen('register')">Register</button>
+                <button class="tab-btn" data-screen="otp" onclick="setScreen('otp')">OTP Verification</button>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-1.5 text-[11px] text-slate-500">
+                    <span class="px-2 py-1 rounded-md bg-white/5">Forgot Password</span>
+                    <span class="px-2 py-1 rounded-md bg-white/5">Reset Password</span>
+                    <span class="px-2 py-1 rounded-md bg-white/5">Success</span>
+                </div>
+                <div class="flex items-center gap-1 bg-[#161F32] p-1 rounded-lg">
+                    <button id="btn-desktop" class="dev-btn active" onclick="setDevice('desktop')" title="Desktop">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="13" rx="2" />
+                            <path d="M8 21h8M12 17v4" />
+                        </svg>
+                    </button>
+                    <button id="btn-mobile" class="dev-btn" onclick="setDevice('mobile')" title="Mobile">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="2" width="12" height="20" rx="2" />
+                            <path d="M11 18h2" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- STAGE                                                          -->
+    <!-- ============================================================ -->
+    <div class="py-12 px-5 flex flex-col items-center gap-4 overflow-x-auto">
+        <div id="frame-title" class="text-slate-400 text-xs font-medium tracking-wide">Login — Desktop (Enhanced
+            Branding)</div>
+
+        <div id="stage" class="device-desktop">
+            <div class="frame bg-white">
+
+                <!-- ===================== BRANDING PANEL (shared) ===================== -->
+                <div
+                    class="branding-panel desktop-only bg-gradient-to-b from-[#2563EB] to-[#1438A6] relative flex-col justify-between p-10 overflow-hidden">
+
+                    <!-- logo -->
+                    <div class="flex items-center gap-2 relative z-10">
+                        <div class="w-8 h-8 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 11l9-8 9 8" />
+                                <path d="M5 10v10h14V10" />
+                            </svg>
+                        </div>
+                        <span class="text-white font-semibold text-lg">Rentora</span>
+                    </div>
+
+                    <!-- headline + illustration -->
+                    <div class="relative z-10 mt-8">
+                        <h1 class="text-white font-semibold text-[34px] leading-[1.15]">Find Your Perfect<br />Rental
+                            Home</h1>
+                        <p class="text-blue-100 text-[15px] leading-relaxed mt-3 max-w-[300px]">Explore verified rental
+                            properties, rooms and PGs near your preferred location.</p>
+                    </div>
+
+                    <!-- signature illustration: skyline + floating verified listing cards -->
+                    <div class="relative h-[180px] mt-6 z-10">
+                        <svg viewBox="0 0 400 180" class="absolute bottom-0 left-0 w-full h-full opacity-90"
+                            preserveAspectRatio="none">
+                            <rect x="0" y="90" width="60" height="90" rx="4" fill="rgba(255,255,255,.10)" />
+                            <rect x="65" y="60" width="70" height="120" rx="4" fill="rgba(255,255,255,.14)" />
+                            <rect x="140" y="100" width="55" height="80" rx="4" fill="rgba(255,255,255,.10)" />
+                            <rect x="200" y="40" width="75" height="140" rx="4" fill="rgba(255,255,255,.16)" />
+                            <rect x="280" y="80" width="60" height="100" rx="4" fill="rgba(255,255,255,.10)" />
+                            <rect x="345" y="55" width="55" height="125" rx="4" fill="rgba(255,255,255,.13)" />
+                            <!-- windows -->
+                            <g fill="rgba(255,255,255,.35)">
+                                <rect x="75" y="75" width="6" height="6" rx="1" />
+                                <rect x="90" y="75" width="6" height="6" rx="1" />
+                                <rect x="105" y="75" width="6" height="6" rx="1" />
+                                <rect x="75" y="95" width="6" height="6" rx="1" />
+                                <rect x="90" y="95" width="6" height="6" rx="1" />
+                                <rect x="105" y="95" width="6" height="6" rx="1" />
+                                <rect x="215" y="60" width="6" height="6" rx="1" />
+                                <rect x="230" y="60" width="6" height="6" rx="1" />
+                                <rect x="245" y="60" width="6" height="6" rx="1" />
+                                <rect x="215" y="80" width="6" height="6" rx="1" />
+                                <rect x="230" y="80" width="6" height="6" rx="1" />
+                                <rect x="245" y="80" width="6" height="6" rx="1" />
+                                <rect x="215" y="100" width="6" height="6" rx="1" />
+                                <rect x="230" y="100" width="6" height="6" rx="1" />
+                                <rect x="245" y="100" width="6" height="6" rx="1" />
+                                <rect x="358" y="72" width="6" height="6" rx="1" />
+                                <rect x="373" y="72" width="6" height="6" rx="1" />
+                                <rect x="358" y="92" width="6" height="6" rx="1" />
+                                <rect x="373" y="92" width="6" height="6" rx="1" />
+                            </g>
+                        </svg>
+
+                        <!-- floating card: listing 1 -->
+                        <div class="floaty absolute top-0 right-2 bg-white rounded-xl shadow-lg px-3 py-2.5 w-[150px]"
+                            style="--rot:2deg">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1 text-[10px] font-medium text-emerald-600">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="9" />
+                                        <path d="M9 12l2 2 4-4" />
+                                    </svg>
+                                    Verified
+                                </div>
+                                <div class="flex items-center gap-0.5 text-[10px] font-medium text-amber-500">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 16.9 5.8 20.3l1.6-6.8L2.2 8.9l6.9-.6L12 2Z" />
+                                    </svg>
+                                    4.8
+                                </div>
+                            </div>
+                            <div class="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 22s7-7.4 7-12a7 7 0 1 0-14 0c0 4.6 7 12 7 12Z" />
+                                    <circle cx="12" cy="10" r="2.5" />
+                                </svg>
+                                Indiranagar, Bengaluru
+                            </div>
+                            <div class="text-[13px] font-semibold text-slate-900 mt-1">₹18,500<span
+                                    class="text-[10px] font-normal text-slate-400">/mo</span></div>
+                        </div>
+
+                        <!-- floating card: listing 2 -->
+                        <div class="floaty floaty-delay absolute bottom-4 left-0 bg-white rounded-xl shadow-lg px-3 py-2.5 w-[140px]"
+                            style="--rot:-3deg">
+                            <div class="flex items-center gap-1 text-[10px] font-medium text-emerald-600">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M9 12l2 2 4-4" />
+                                </svg>
+                                Verified PG
+                            </div>
+                            <div class="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 22s7-7.4 7-12a7 7 0 1 0-14 0c0 4.6 7 12 7 12Z" />
+                                    <circle cx="12" cy="10" r="2.5" />
+                                </svg>
+                                Andheri West, Mumbai
+                            </div>
+                            <div class="text-[13px] font-semibold text-slate-900 mt-1">₹9,200<span
+                                    class="text-[10px] font-normal text-slate-400">/mo</span></div>
+                        </div>
+                    </div>
+
+                    <!-- stat cards -->
+                    <div class="relative z-10 grid grid-cols-3 gap-2 mt-6">
+                        <div
+                            class="bg-white/10 backdrop-blur border border-white/15 rounded-xl px-2.5 py-3 text-center">
+                            <div class="text-white font-semibold text-[16px]">10,000+</div>
+                            <div class="text-blue-100 text-[10px] mt-0.5">Listings</div>
+                        </div>
+                        <div
+                            class="bg-white/10 backdrop-blur border border-white/15 rounded-xl px-2.5 py-3 text-center">
+                            <div class="text-white font-semibold text-[16px]">5,000+</div>
+                            <div class="text-blue-100 text-[10px] mt-0.5">Happy Renters</div>
+                        </div>
+                        <div
+                            class="bg-white/10 backdrop-blur border border-white/15 rounded-xl px-2.5 py-3 text-center">
+                            <div class="text-white font-semibold text-[16px]">100+</div>
+                            <div class="text-blue-100 text-[10px] mt-0.5">Cities</div>
+                        </div>
+                    </div>
+
+                    <!-- trust badges -->
+                    <div class="relative z-10 flex items-center gap-4 mt-6 pt-5 border-t border-white/15">
+                        <div class="flex items-center gap-1.5 text-blue-100 text-[11px]">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
+                            Verified Listings
+                        </div>
+                        <div class="flex items-center gap-1.5 text-blue-100 text-[11px]">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="5" y="11" width="14" height="9" rx="2" />
+                                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                            </svg>
+                            Secure Contact
+                        </div>
+                        <div class="flex items-center gap-1.5 text-blue-100 text-[11px]">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="7" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                            Easy Search
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===================== FORM PANEL ===================== -->
+                <div
+                    class="form-panel bg-[#F8FAFC] flex flex-col items-center px-6 py-8 md:px-10 md:py-10 overflow-y-auto">
+
+                    <!-- mobile top bar -->
+                    <div class="mobile-only w-full flex-col items-center mb-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 11l9-8 9 8" />
+                                    <path d="M5 10v10h14V10" />
+                                </svg>
+                            </div>
+                            <span class="text-textPrimary font-semibold text-lg">Rentora</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full max-w-[400px] my-auto">
+
+                        <!-- ============ LOGIN SCREEN ============ -->
+                        <div id="screen-login" class="screen active">
+                            <div class="auth-card px-7 py-8 md:px-9 md:py-9">
+                                <h2 class="text-[26px] font-semibold text-textPrimary">Welcome Back</h2>
+                                <p class="text-textSecondary text-sm mt-1">Please enter your details to sign in</p>
+
+                                <form class="mt-6 space-y-4" onsubmit="return false">
+                                    <div>
+                                        <label class="field-label">Email Address</label>
+                                        <div class="field-wrap">
+                                            <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1.8">
+                                                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                                                    <path d="m3 7 9 6 9-6" />
+                                                </svg></span>
+                                            <input type="email" class="field-input" placeholder="abc@gamil.com" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1.5">
+                                            <label class="field-label !mb-0">Password</label>
+                                            <a href="#"
+                                                class="text-primary text-[13px] font-medium hover:text-primaryHover">Forgot
+                                                Password?</a>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1.8">
+                                                    <rect x="5" y="11" width="14" height="9" rx="2" />
+                                                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                                                </svg></span>
+                                            <input id="login-pass" type="password" class="field-input with-toggle"
+                                                placeholder="••••••••" />
+                                            <button type="button" class="field-toggle"
+                                                onclick="togglePass('login-pass', this)">
+                                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="1.8">
+                                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                                                    <circle cx="12" cy="12" r="3" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2 pt-1">
+                                        <input type="checkbox" class="chk" id="remember" checked />
+                                        <label for="remember"
+                                            class="text-[13px] text-textSecondary cursor-pointer">Remember me for 30
+                                            days</label>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary mt-1" onclick="fakeSubmit(this)">Sign
+                                        In</button>
+                                </form>
+
+                                <div class="divider">OR</div>
+
+                                <button class="btn btn-google">
+                                    <svg width="18" height="18" viewBox="0 0 48 48">
+                                        <path fill="#FFC107"
+                                            d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.4-3.5z" />
+                                        <path fill="#FF3D00"
+                                            d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5c-7.7 0-14.4 4.3-17.7 10.2z" />
+                                        <path fill="#4CAF50"
+                                            d="M24 43.5c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 34.7 26.9 35.8 24 35.8c-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.4 39.1 16.2 43.5 24 43.5z" />
+                                        <path fill="#1976D2"
+                                            d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.6 5.4C40.8 36.4 43.5 30.7 43.5 24c0-1.2-.1-2.4-.4-3.5z" />
+                                    </svg>
+                                    Continue with Google
+                                </button>
+
+                                <p class="text-center text-[14px] text-textSecondary mt-6">Don't have an account? <a
+                                        href="#" class="text-primary font-medium hover:text-primaryHover"
+                                        onclick="setScreen('register');return false">Sign Up</a></p>
+                            </div>
+
+                            <div class="desktop-only justify-center gap-4 mt-6">
+                                <a href="#" class="text-[12px] text-textSecondary hover:text-textPrimary">Privacy
+                                    Policy</a>
+                                <a href="#" class="text-[12px] text-textSecondary hover:text-textPrimary">Terms of
+                                    Service</a>
+                                <a href="#" class="text-[12px] text-textSecondary hover:text-textPrimary">Help
+                                    Center</a>
+                            </div>
+                        </div>
+
+                        <!-- ============ REGISTER SCREEN ============ -->
+                        <div id="screen-register" class="screen">
+                            <div class="auth-card px-7 py-8 md:px-9 md:py-9">
+                                <h2 class="text-[26px] font-semibold text-textPrimary">Create Your Account</h2>
+                                <p class="text-textSecondary text-sm mt-1">Join Rentora to find or list rental
+                                    properties</p>
+
+                                <form class="mt-6 space-y-4" onsubmit="return false">
+                                    <div>
+                                        <label class="field-label">Full Name</label>
+                                        <div class="field-wrap">
+                                            <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1.8">
+                                                    <circle cx="12" cy="8" r="4" />
+                                                    <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
+                                                </svg></span>
+                                            <input type="text" class="field-input" placeholder="Aditi Sharma" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label">Email Address</label>
+                                        <div class="field-wrap">
+                                            <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1.8">
+                                                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                                                    <path d="m3 7 9 6 9-6" />
+                                                </svg></span>
+                                            <input type="email" class="field-input" placeholder="name@company.com" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label">Mobile Number</label>
+                                        <div class="field-wrap flex items-center">
+                                            <span
+                                                class="absolute left-[14px] text-[15px] text-textPrimary font-medium border-r border-borderC pr-2.5 z-10">+91</span>
+                                            <input type="tel" class="field-input" style="padding-left:58px"
+                                                placeholder="98765 43210" />
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="field-label">Password</label>
+                                            <div class="field-wrap">
+                                                <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="1.8">
+                                                        <rect x="5" y="11" width="14" height="9" rx="2" />
+                                                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                                                    </svg></span>
+                                                <input id="reg-pass" type="password" class="field-input with-toggle"
+                                                    placeholder="••••••••" />
+                                                <button type="button" class="field-toggle"
+                                                    onclick="togglePass('reg-pass', this)">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1.8">
+                                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="field-label">Confirm Password</label>
+                                            <div class="field-wrap">
+                                                <span class="field-icon"><svg width="17" height="17" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="1.8">
+                                                        <rect x="5" y="11" width="14" height="9" rx="2" />
+                                                        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                                                    </svg></span>
+                                                <input id="reg-pass2" type="password" class="field-input with-toggle"
+                                                    placeholder="••••••••" />
+                                                <button type="button" class="field-toggle"
+                                                    onclick="togglePass('reg-pass2', this)">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1.8">
+                                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="field-label">I am</label>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <div class="type-card selected" onclick="selectType(this)">
+                                                <div class="dot"></div>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#2563EB" stroke-width="1.8">
+                                                    <path d="M3 11l9-8 9 8" />
+                                                    <path d="M5 10v10h14V10" />
+                                                </svg>
+                                                <div class="text-[14px] font-medium text-textPrimary mt-2">Looking for
+                                                    Rent</div>
+                                                <div class="text-[12px] text-textSecondary mt-0.5">Find rooms, flats &
+                                                    PGs</div>
+                                            </div>
+                                            <div class="type-card" onclick="selectType(this)">
+                                                <div class="dot"></div>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#2563EB" stroke-width="1.8">
+                                                    <rect x="3" y="7" width="18" height="14" rx="2" />
+                                                    <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                                                </svg>
+                                                <div class="text-[14px] font-medium text-textPrimary mt-2">Property
+                                                    Owner</div>
+                                                <div class="text-[12px] text-textSecondary mt-0.5">List your property
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2 pt-1">
+                                        <input type="checkbox" class="chk mt-0.5" id="terms" />
+                                        <label for="terms" class="text-[13px] text-textSecondary cursor-pointer">I agree
+                                            to Rentora's <a href="#" class="text-primary font-medium">Terms of
+                                                Service</a> and <a href="#" class="text-primary font-medium">Privacy
+                                                Policy</a></label>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary mt-1" onclick="fakeSubmit(this)">Create
+                                        Account</button>
+                                </form>
+
+                                <div class="divider">OR</div>
+
+                                <button class="btn btn-google">
+                                    <svg width="18" height="18" viewBox="0 0 48 48">
+                                        <path fill="#FFC107"
+                                            d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.4-3.5z" />
+                                        <path fill="#FF3D00"
+                                            d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5c-7.7 0-14.4 4.3-17.7 10.2z" />
+                                        <path fill="#4CAF50"
+                                            d="M24 43.5c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 34.7 26.9 35.8 24 35.8c-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.4 39.1 16.2 43.5 24 43.5z" />
+                                        <path fill="#1976D2"
+                                            d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.6 5.4C40.8 36.4 43.5 30.7 43.5 24c0-1.2-.1-2.4-.4-3.5z" />
+                                    </svg>
+                                    Sign up with Google
+                                </button>
+
+                                <p class="text-center text-[14px] text-textSecondary mt-6">Already have an account? <a
+                                        href="#" class="text-primary font-medium hover:text-primaryHover"
+                                        onclick="setScreen('login');return false">Login</a></p>
+                            </div>
+                        </div>
+
+                        <!-- ============ OTP VERIFICATION SCREEN ============ -->
+                        <div id="screen-otp" class="screen">
+                            <div class="auth-card px-7 py-8 md:px-9 md:py-9">
+                                <button
+                                    class="flex items-center gap-1.5 text-textSecondary text-[13px] font-medium hover:text-textPrimary mb-5"
+                                    onclick="setScreen('register')">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M19 12H5" />
+                                        <path d="m12 19-7-7 7-7" />
+                                    </svg>
+                                    Back
+                                </button>
+
+                                <h2 class="text-[26px] font-semibold text-textPrimary">Verify Your Number</h2>
+                                <p class="text-textSecondary text-sm mt-1">Enter the 6-digit code sent to <span
+                                        class="text-textPrimary font-medium">+91 98765 43210</span></p>
+
+                                <div id="otp-alert" class="alert alert-success mt-5 hidden">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.2">
+                                        <circle cx="12" cy="12" r="9" />
+                                        <path d="M9 12l2 2 4-4" />
+                                    </svg>
+                                    New OTP sent successfully
+                                </div>
+
+                                <div class="flex justify-between gap-2 mt-6" id="otp-group">
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                    <input class="otp-box" maxlength="1" inputmode="numeric" />
+                                </div>
+
+                                <div class="flex items-center justify-between mt-5">
+                                    <span class="text-[13px] text-textSecondary">Code expires in <span id="otp-timer"
+                                            class="text-textPrimary font-medium">00:30</span></span>
+                                    <button id="resend-btn"
+                                        class="text-[13px] font-medium text-slate-300 cursor-not-allowed" disabled
+                                        onclick="resendOtp()">Resend OTP</button>
+                                </div>
+
+                                <button type="button" class="btn btn-primary mt-6" onclick="fakeSubmit(this)">Verify &
+                                    Continue</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- mobile bottom trust strip -->
+                    <div class="mobile-only w-full flex-col items-center gap-2 mt-6 pb-2">
+                        <div class="flex items-center gap-4 text-textSecondary text-[11px]">
+                            <span class="flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="11" width="14" height="9" rx="2" />
+                                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                                </svg>Secure Data</span>
+                            <span class="flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z" />
+                                    <path d="M9 12l2 2 4-4" />
+                                </svg>Verified Hosts</span>
+                        </div>
+                        <div class="text-[10px] text-slate-400">© 2026 Rentora Rental Marketplace. All rights reserved.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="frame-dim" class="frame-label">1180 × 740</div>
+    </div>
+
+    <script>
+        function setScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + name).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.toggle('active', t.dataset.screen === name));
+            const titles = { login: 'Login — Desktop (Enhanced Branding)', register: 'Register — Desktop', otp: 'OTP Verification — Desktop' };
+            const device = document.getElementById('stage').classList.contains('device-mobile') ? 'Mobile' : 'Desktop';
+            const base = { login: 'Login', register: 'Register', otp: 'OTP Verification' }[name];
+            document.getElementById('frame-title').textContent = base + ' — ' + device;
+            if (name === 'otp') startOtpTimer();
+        }
+
+        function setDevice(mode) {
+            const stage = document.getElementById('stage');
+            stage.classList.remove('device-desktop', 'device-mobile');
+            stage.classList.add('device-' + mode);
+            document.getElementById('btn-desktop').classList.toggle('active', mode === 'desktop');
+            document.getElementById('btn-mobile').classList.toggle('active', mode === 'mobile');
+            document.getElementById('frame-dim').textContent = mode === 'mobile' ? '390 × 780' : '1180 × 740';
+            const active = document.querySelector('.tab-btn.active').dataset.screen;
+            setScreen(active);
+        }
+
+        function togglePass(id, btn) {
+            const input = document.getElementById(id);
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            btn.innerHTML = isPass
+                ? '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l18 18"/><path d="M10.6 10.6a3 3 0 0 0 4.2 4.2"/><path d="M9.9 5.1A11 11 0 0 1 12 5c7 0 11 7 11 7a13.4 13.4 0 0 1-3.1 3.8M6.6 6.6A13.4 13.4 0 0 0 1 12s4 7 11 7a11 11 0 0 0 4.1-.8"/></svg>'
+                : '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+
+        function selectType(el) {
+            el.parentElement.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function fakeSubmit(btn) {
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Please wait';
+            setTimeout(() => { btn.disabled = false; btn.innerHTML = original; }, 1200);
+        }
+
+        // OTP behaviour
+        const otpInputs = () => Array.from(document.querySelectorAll('#otp-group .otp-box'));
+        otpInputs().forEach((box, i) => {
+            box.addEventListener('input', e => {
+                box.value = box.value.replace(/[^0-9]/g, '');
+                if (box.value && i < otpInputs().length - 1) otpInputs()[i + 1].focus();
+            });
+            box.addEventListener('keydown', e => {
+                if (e.key === 'Backspace' && !box.value && i > 0) otpInputs()[i - 1].focus();
+            });
+            box.addEventListener('paste', e => {
+                e.preventDefault();
+                const digits = (e.clipboardData.getData('text').match(/[0-9]/g) || []).slice(0, otpInputs().length);
+                digits.forEach((d, idx) => { if (otpInputs()[idx]) otpInputs()[idx].value = d; });
+                if (digits.length) otpInputs()[Math.min(digits.length, otpInputs().length - 1)].focus();
+            });
+        });
+
+        let otpTimerInt;
+        function startOtpTimer() {
+            clearInterval(otpTimerInt);
+            let seconds = 30;
+            const resendBtn = document.getElementById('resend-btn');
+            resendBtn.disabled = true;
+            resendBtn.classList.add('text-slate-300', 'cursor-not-allowed');
+            resendBtn.classList.remove('text-primary', 'hover:text-primaryHover', 'cursor-pointer');
+            const update = () => {
+                const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const s = String(seconds % 60).padStart(2, '0');
+                document.getElementById('otp-timer').textContent = m + ':' + s;
+            };
+            update();
+            otpTimerInt = setInterval(() => {
+                seconds--;
+                update();
+                if (seconds <= 0) {
+                    clearInterval(otpTimerInt);
+                    resendBtn.disabled = false;
+                    resendBtn.classList.remove('text-slate-300', 'cursor-not-allowed');
+                    resendBtn.classList.add('text-primary', 'cursor-pointer');
+                }
+            }, 1000);
+        }
+
+        function resendOtp() {
+            otpInputs().forEach(b => b.value = '');
+            otpInputs()[0].focus();
+            const alertEl = document.getElementById('otp-alert');
+            alertEl.classList.remove('hidden');
+            setTimeout(() => alertEl.classList.add('hidden'), 2500);
+            startOtpTimer();
+        }
+    </script>
+</body>
+
+</html>

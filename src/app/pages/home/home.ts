@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -57,7 +58,7 @@ interface FooterColumn {
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, ButtonModule, InputTextModule, SelectModule, TagModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, SelectModule, TagModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

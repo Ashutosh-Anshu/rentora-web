@@ -1,0 +1,43 @@
+.form-label {
+    display: block !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
+}
+
+.form-error {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 12px;
+    color: var(--danger-color);
+}
+
+/* INPUT BASE */
+.form-input,
+.p-inputtext {
+    width: 100% !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* FOCUS (PrimeNG-safe) */
+.form-input:focus,
+.p-inputtext:focus,
+.p-inputtext.p-focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* ERROR STATE */
+.form-input.error,
+.p-inputtext.error {
+    border-color: var(--danger-color);
+}
+
+.form-group {
+    margin-bottom: 0.75rem;
+}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,40 +14,48 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormValidation } from '../../shared';
-
 @Component({
-  selector: 'app-login',
-  standalone: true,
+  selector: 'app-register',
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink,
     InputTextModule,
     ButtonModule,
     PasswordModule,
     CheckboxModule,
     FloatLabelModule,
+    RouterLink
   ],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+  templateUrl: './register.html',
+  styleUrl: './register.scss',
 })
-export class Login {
+export class Register {
+
   loading = signal(false);
   private fb = inject(FormBuilder);
   public v = inject(FormValidation);
 
   constructor() { }
 
-  loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    rememberMe: [true]
-  });
+
+  registrationForm: FormGroup = this.fb.group({
+      role: ['tenant'],
+      fullName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+      termsAccepted: [false, Validators.requiredTrue]
+    },
+    {
+      validators: this.v.passwordMatchValidator()
+    }
+  );
 
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
+    if (this.registrationForm.invalid) {
+      this.registrationForm.markAllAsTouched();
       return;
     }
 
@@ -55,7 +63,7 @@ export class Login {
 
     setTimeout(() => {
       this.loading.set(false);
-      console.log('Login payload', this.loginForm.value);
+      console.log('Registration payload', this.registrationForm.value);
     }, 1200);
   }
 
