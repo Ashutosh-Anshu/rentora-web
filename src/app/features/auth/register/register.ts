@@ -15,7 +15,7 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormValidation, UiStateService } from '../../../shared/services';
 import { AuthService } from '../../../core/auth';
-import { Role } from '../../../shared/enum';
+import { Role } from '../../../shared/enums';
 
 @Component({
   selector: 'app-register',

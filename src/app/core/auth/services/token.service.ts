@@ -18,6 +18,18 @@ export class TokenService {
     storage.setItem(this.REFRESH_TOKEN, refreshToken);
   }
 
+  getUserId(): string {
+    const token = this.getAccessToken();
+    if (!token) return '';
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub;
+    } catch {
+      return '';
+    }
+  }
+
   getAccessToken(): string | null {
     return (
       localStorage.getItem(this.ACCESS_TOKEN) ??

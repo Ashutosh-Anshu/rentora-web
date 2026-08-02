@@ -1,25 +1,26 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, inject } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
-import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
-import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
+import { AvatarColorPipe, AvatarInitialsPipe, SidebarStore, UserStore } from '../../shared';
 
 @Component({
   selector: 'app-header',
-  imports: [MenubarModule, AvatarModule, RippleModule, CommonModule],
+  imports: [MenubarModule, AvatarModule, RippleModule, CommonModule, AvatarInitialsPipe, AvatarColorPipe],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
 
-  sidebarVisible = signal(false);
+  private sidebarStore = inject(SidebarStore);
+  private readonly userStore = inject(UserStore);
+  readonly user = this.userStore.user;
 
-  sidebarToggle() {
-    this.sidebarVisible.update(value => !value);
+  sidebarToggle(): void {
+    this.sidebarStore.sidebarToggle();
   }
+
 
 
 }

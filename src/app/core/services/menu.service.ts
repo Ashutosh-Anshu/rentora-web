@@ -13,9 +13,9 @@ export class MenuService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/menus`;
 
-  getMenus(): Observable<Result<Menu[]>> {
+  getMenus(userId: string): Observable<Result<Menu[]>> {
     return this.http.get<Result<Menu[]>>(
-      `${this.baseUrl}/getMenus`
+      `${this.baseUrl}/getMenus/${userId}`
     );
   }
 }

@@ -1,11 +1,12 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SidebarStore } from "../stores";
 
 @Injectable({
   providedIn: 'root',
 })
-export class UiStateService {
+export class UiStateService extends SidebarStore {
 
   readonly isDisabled = signal(false);
   private readonly spinner = inject(NgxSpinnerService);

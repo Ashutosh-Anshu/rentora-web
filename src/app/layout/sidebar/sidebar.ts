@@ -4,7 +4,7 @@ import { Drawer, DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
-import { MenuStore } from '../../shared/stores';
+import { MenuStore, SidebarStore } from '../../shared/stores';
 import { Menu } from '../../core/models';
 import { RouterLink } from '@angular/router';
 
@@ -16,24 +16,23 @@ import { RouterLink } from '@angular/router';
 })
 export class Sidebar {
   private menuStore = inject(MenuStore);
+  protected sidebarStore = inject(SidebarStore)
+
+  menus = signal<Menu[]>([]);
 
   @ViewChild('drawerRef') drawerRef!: Drawer;
-  menus = signal<Menu[]>([]);
 
   ngOnInit() { }
 
-  visible: boolean = false;
-
   closeCallback(e: any): void {
     this.drawerRef.close(e);
+    this.sidebarStore.closeSidebar();
   }
 
   public loadMenu = effect(() => {
     this.menus.set(this.menuStore.menus());
   });
 
-  public sidebarToggle = effect(() => {
-    this.visible = !this.visible;
-  });
+
 
 }

@@ -4,7 +4,7 @@ import { AuthUser } from '../../core/models';
 @Injectable({
   providedIn: 'root',
 })
-export class CurrentUserStore {
+export class UserStore {
   readonly user = signal<AuthUser | null>(null);
 
   setUser(user: AuthUser): void {

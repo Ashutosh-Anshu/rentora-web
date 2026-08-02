@@ -1,5 +1,5 @@
 <div class="flex justify-center">
-    <p-drawer #drawerRef [(visible)]="visible">
+    <p-drawer #drawerRef [visible]="sidebarStore.isSidebarOpen()" styleClass="r-sidebar-drawer" [modal]="false">
         <ng-template #headless>
             <div class="flex flex-col h-full">
                 <div class="flex items-center justify-between px-5 pt-3 shrink-0">
@@ -10,7 +10,7 @@
                     <span>
                         <button type="button" pButton iconOnly (click)="closeCallback($event)" outlined="true"
                             class="h-8 w-8">
-                            <i [class]=" visible ? 'pi pi-arrow-left' : 'pi pi-arrow-right'"></i>
+                            <i [class]=" sidebarStore.isSidebarOpen() ? 'pi pi-arrow-left' : 'pi pi-arrow-right'"></i>
                         </button>
                     </span>
                 </div>
@@ -134,7 +134,7 @@
 
                     </ul>
                 </div>
-                <div class="mt-auto">
+                <!-- <div class="mt-auto">
                     <hr class="mb-3 mx-3 border-t border-0 border-surface" />
                     <a pRipple
                         class="m-3 flex items-center cursor-pointer p-3 gap-2 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
@@ -142,9 +142,9 @@
                             shape="circle" />
                         <span class="font-bold text-sm">Amy Elsner</span>
                     </a>
-                </div>
+                </div> -->
             </div>
         </ng-template>
     </p-drawer>
-    <button type="button" pButton iconOnly (click)="visible = true"><i class="pi pi-bars"></i></button>
+    <!-- <button type="button" pButton iconOnly (click)="visible = true"><i class="pi pi-bars"></i></button> -->
 </div>

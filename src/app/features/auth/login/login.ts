@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService, TokenService } from '../../../core/auth';
-import { MenuStore, CurrentUserStore } from '../../../shared/stores';
+import { MenuStore, UserStore } from '../../../shared/stores';
 import { MenuService } from '../../../core/services';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,7 +35,7 @@ export class Login extends UiStateService {
   private tokenService = inject(TokenService);
   private menuService = inject(MenuService);
   private menuStore = inject(MenuStore);
-  private userStore = inject(CurrentUserStore);
+  private userStore = inject(UserStore);
   private router = inject(Router);
 
 
@@ -82,10 +82,8 @@ export class Login extends UiStateService {
 
       // Load application menus
       const menuResponse = await firstValueFrom(
-        this.menuService.getMenus()
+        this.menuService.getMenus(this.tokenService.getUserId())
       );
-
-      debugger
 
       if (!menuResponse.success) {
         this.tokenService.clearToken();
