@@ -1,0 +1,73 @@
+// ==========================================================================
+// RENTORA — DESIGN TOKENS
+// ==========================================================================
+
+:root {
+    // ---- Brand / Primary ----
+    --color-primary: #2563EB;
+    --color-primary-hover: #1D4ED8;
+    --color-primary-active: #1E40AF;
+    --color-primary-light: #DBEAFE;
+    --color-primary-lighter: #EFF6FF;
+
+    // ---- Neutrals ----
+    --color-bg: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-border: #E2E8F0;
+    --color-border-strong: #CBD5E1;
+
+    // ---- Text ----
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --text-on-primary: #FFFFFF;
+
+    // ---- Semantic / Status ----
+    --color-success: #16A34A;
+    --color-success-light: #DCFCE7;
+    --color-warning: #F59E0B;
+    --color-warning-light: #FEF3C7;
+    --color-danger: #DC2626;
+    --color-danger-light: #FEE2E2;
+    --color-info: #2563EB;
+    --color-info-light: #DBEAFE;
+
+    // ---- Radius ----
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 100%;
+
+    // ---- Spacing (4px base scale) ----
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+
+    // ---- Shadow (use sparingly — flat design) ----
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+    // ---- Font ----
+    --font-family-base: 'Inter', sans-serif;
+
+    // ---- Transition ----
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+}
+
+// SCSS variables (build-time — jab :root var kaam na aaye, e.g. inside functions)
+$color-primary: #2563EB;
+$color-danger: #DC2626;
+
+
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
