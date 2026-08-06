@@ -1,4 +1,177 @@
-:host ::ng-deep .r-sidebar-drawer {
-    top: 56px !important;
-    height: calc(100% - 56px) !important;
+.sidebar {
+  width: 260px;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.sidebar.closed {
+  width: 0;
+  border-right: none;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #2563EB;
+  white-space: nowrap;
+}
+
+.menu-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem 0.75rem;
+  height: calc(100% - 60px);   
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.15s ease;
+  min-height: 40px;           
+
+  &:hover {
+    background: #f3f4f6;
+  }
+
+  &.active {
+    background: #eff6ff;
+    color: #2563EB;
+  }
+}
+
+.chevron {
+  margin-left: auto;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.menu-item.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1rem;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.submenu.open {
+  grid-template-rows: 1fr;
+}
+
+.submenu-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.submenu-item {
+  font-size: 0.8rem;
+  padding-left: 1.25rem;
+  min-height: 36px;
+}
+
+.backdrop {
+  display: none;
+}
+
+// ---- Tablet (769px - 1024px):  ----
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+}
+
+// ---- Mobile (≤768px): overlay style ----
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    max-width: 80vw;             
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 30;
+  }
+
+  .sidebar:not(.closed) {
+    transform: translateX(0);
+  }
+
+  .sidebar.closed {
+    width: 260px;
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 25;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// ---- Very small phones (≤375px): sidebar aur bhi tight ----
+@media (max-width: 375px) {
+  .sidebar {
+    width: 85vw;
+    max-width: 260px;
+  }
+
+  .sidebar.closed {
+    width: 85vw;
+    max-width: 260px;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+  }
+
+  .menu-item {
+    font-size: 0.82rem;
+    padding: 0.6rem 0.6rem;
+  }
 }

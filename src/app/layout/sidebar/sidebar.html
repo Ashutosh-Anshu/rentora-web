@@ -1,150 +1,47 @@
-<div class="flex justify-center">
-    <p-drawer #drawerRef [visible]="sidebarStore.isSidebarOpen()" styleClass="r-sidebar-drawer" [modal]="false">
-        <ng-template #headless>
-            <div class="flex flex-col h-full">
-                <div class="flex items-center justify-between px-5 pt-3 shrink-0">
-                    <div class="flex items-end gap-2 text-xl font-bold font-sans text-text-primary">
-                        <img src="/logo/rentora_logo.png" alt="Rentora Logo" class="h-8 w-auto" />
-                        <span class="text-primary">Rentora</span>
-                    </div>
-                    <span>
-                        <button type="button" pButton iconOnly (click)="closeCallback($event)" outlined="true"
-                            class="h-8 w-8">
-                            <i [class]=" sidebarStore.isSidebarOpen() ? 'pi pi-arrow-left' : 'pi pi-arrow-right'"></i>
-                        </button>
-                    </span>
-                </div>
+<!-- Mobile backdrop, sirf tab dikhega jab sidebar open + mobile view -->
+<div class="backdrop" [class.show]="sidebarStore.isSidebarOpen()" (click)="closeSidebar()"></div>
 
-                <div class="overflow-y-auto">
-                    <!-- <ul class="list-none p-3 m-0 overflow-hidden">
-                        <li>
-                            <a pRipple
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="home" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Dashboard</span>
-                            </a>
-                        </li>
+<aside class="sidebar" [class.closed]="!sidebarStore.isSidebarOpen()">
+    <div class="flex flex-col h-full overflow-hidden">
 
-                        <li>
-                            <a pRipple pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-slidedown"
-                                leaveToClass="hidden" leaveActiveClass="animate-slideup"
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="chart-line" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Reports</span>
-                                <svg data-p-icon="chevron-down" class="ml-auto"></svg>
-                            </a>
-                            <ul
-                                class="list-none py-0 pl-4 pr-0 m-0 hidden overflow-y-hidden transition-all duration-400 ease-in-out">
-                                <li>
-                                    <a pRipple pStyleClass="@next" enterFromClass="hidden"
-                                        enterActiveClass="animate-slidedown" leaveToClass="hidden"
-                                        leaveActiveClass="animate-slideup"
-                                        class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                        <svg data-p-icon="chart-line" class="mr-2"></svg>
-                                        <span class="font-medium text-sm">Revenue</span>
-                                        <svg data-p-icon="chevron-down" class="ml-auto"></svg>
-                                    </a>
-                                    <ul
-                                        class="list-none py-0 pl-4 pr-0 m-0 hidden overflow-y-hidden transition-all duration-400 ease-in-out">
+        <div class="logo-row">
+            <img src="/logo/rentora_logo.png" alt="Rentora Logo" class="h-8 w-auto" />
+            <span class="logo-text">Rentora</span>
+        </div>
 
-                                        <li>
-                                            <a pRipple
-                                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                                <svg data-p-icon="search" class="mr-2"></svg>
-                                                <span class="font-medium text-sm">Search</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a pRipple
-                                        class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                        <svg data-p-icon="chart-line" class="mr-2"></svg>
-                                        <span class="font-medium text-sm">Expenses</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a pRipple
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="users" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Team</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a pRipple
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="comments" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Messages</span>
-                                <span
-                                    class="inline-flex items-center justify-center ml-auto bg-primary text-primary-contrast rounded-full text-sm"
-                                    style="min-width: 1.4rem; height: 1.4rem">3</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a pRipple
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="calendar" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Calendar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a pRipple
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <svg data-p-icon="cog" class="mr-2"></svg>
-                                <span class="font-medium text-sm">Settings</span>
-                            </a>
-                        </li>
-                    </ul> -->
-                    <ul class="list-none p-3 m-0 overflow-hidden">
-                        @for (menu of menus(); track menu.id) {
-                        <li>
-                            @if (menu.children.length === 0) {
-                            <a pRipple [routerLink]="menu.route"
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <!-- <i class="pi {{ menu.icon }} mr-2"></i> -->
-                                <span class="font-medium text-sm">{{ menu.displayName }}</span>
-                            </a>
-                            } @else {
-
-                            <a pRipple pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-slidedown"
-                                leaveToClass="hidden" leaveActiveClass="animate-slideup"
-                                class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                <!-- <i class="pi pi-check mr-2"></i> -->
-                                <span class="font-medium text-sm">{{ menu.displayName }}</span>
-                                <i class="pi pi-angle-down ml-auto"></i>
-                            </a>
-
-                            <ul
-                                class="list-none py-0 pl-4 pr-0 m-0 hidden overflow-y-hidden transition-all duration-400 ease-in-out">
-                                @for (child of menu.children; track child.id) {
-                                <li>
-                                    <a pRipple
-                                        class="flex items-center cursor-pointer p-3 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                                        <!-- <i class="pi pi-check mr-2"></i> -->
-                                        <span class="font-medium text-sm">{{ child.displayName }}</span>
-                                    </a>
-                                </li>
-                                }
-                            </ul>
-                            }
-                        </li>
-                        }
-
-                    </ul>
-                </div>
-                <!-- <div class="mt-auto">
-                    <hr class="mb-3 mx-3 border-t border-0 border-surface" />
-                    <a pRipple
-                        class="m-3 flex items-center cursor-pointer p-3 gap-2 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle" />
-                        <span class="font-bold text-sm">Amy Elsner</span>
+        <nav class="menu-scroll">
+            <ul class="menu-list">
+                @for (menu of menus(); track menu.id) {
+                <li>
+                    @if (menu.children.length === 0) {
+                    <a pRipple [routerLink]="menu.route" routerLinkActive="active" class="menu-item"
+                        (click)="onMenuClick()">
+                        <span>{{ menu.displayName }}</span>
                     </a>
-                </div> -->
-            </div>
-        </ng-template>
-    </p-drawer>
-    <!-- <button type="button" pButton iconOnly (click)="visible = true"><i class="pi pi-bars"></i></button> -->
-</div>
+                    } @else {
+                    <a pRipple (click)="toggleExpand(menu.id)" class="menu-item"
+                        [class.expanded]="expandedId() === menu.id">
+                        <span>{{ menu.displayName }}</span>
+                        <i class="pi pi-angle-down chevron"></i>
+                    </a>
+
+                    <ul class="submenu" [class.open]="expandedId() === menu.id">
+                        <div class="submenu-inner">
+                            @for (child of menu.children; track child.id) {
+                            <li>
+                                <a pRipple [routerLink]="child.route" routerLinkActive="active"
+                                    class="menu-item submenu-item" (click)="onMenuClick()">
+                                    <span>{{ child.displayName }}</span>
+                                </a>
+                            </li>
+                            }
+                        </div>
+                    </ul>
+                    }
+                </li>
+                }
+            </ul>
+        </nav>
+
+    </div>
+</aside>

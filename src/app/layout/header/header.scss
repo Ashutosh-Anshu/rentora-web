@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  flex-shrink: 0;
+}
+
+::ng-deep .p-menubar {
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 480px) {
+  ::ng-deep .p-menubar {
+    padding: 0.4rem 0.6rem;
+  }
+}

@@ -16,23 +16,26 @@ import { RouterLink } from '@angular/router';
 })
 export class Sidebar {
   private menuStore = inject(MenuStore);
-  protected sidebarStore = inject(SidebarStore)
+  protected sidebarStore = inject(SidebarStore);
 
   menus = signal<Menu[]>([]);
-
-  @ViewChild('drawerRef') drawerRef!: Drawer;
-
-  ngOnInit() { }
-
-  closeCallback(e: any): void {
-    this.drawerRef.close(e);
-    this.sidebarStore.closeSidebar();
-  }
+  expandedId = signal<string | null>(null);
 
   public loadMenu = effect(() => {
     this.menus.set(this.menuStore.menus());
   });
 
+  toggleExpand(menuId: string): void {
+    this.expandedId.set(this.expandedId() === menuId ? null : menuId);
+  }
 
+  closeSidebar(): void {
+    this.sidebarStore.closeSidebar();
+  }
 
+  onMenuClick(): void {
+    if (window.innerWidth <= 768) {
+      this.sidebarStore.closeSidebar();
+    }
+  }
 }
