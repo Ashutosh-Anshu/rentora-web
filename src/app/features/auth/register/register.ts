@@ -83,7 +83,7 @@ export class Register extends UiStateService {
 
       if (response.success) {
         this.showSuccess(response.message);
-        await this.router.navigate(['/login']);
+        await this.router.navigate(['/auth/login']);
         return;
       }
 

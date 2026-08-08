@@ -38,7 +38,7 @@ export class App {
 
     }
     else {
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/']);
     }
   }
 }
