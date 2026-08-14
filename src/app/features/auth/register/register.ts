@@ -19,7 +19,7 @@ import { Role } from '../../../shared/enums';
 
 @Component({
   selector: 'app-register',
-   imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     InputTextModule,
@@ -67,14 +67,14 @@ export class Register extends UiStateService {
   );
 
   async onSubmit(): Promise<void> {
-    console.log('Register clicked!');
     this.disableAction();
+
     if (this.registrationForm.invalid) {
       this.registrationForm.markAllAsTouched();
       this.restore();
       return;
     }
-    console.log('Register clicked! 2');
+
     this.showLoadingPanel();
 
     try {
@@ -82,15 +82,22 @@ export class Register extends UiStateService {
         this.authService.register(this.registrationForm.value)
       );
 
-      console.log('Register clicked! 3');
       if (response.success) {
-        console.log('Register clicked! 4');
         this.showSuccess(response.message);
         await this.router.navigate(['/auth/login']);
         return;
       }
-      console.log('Register clicked! 5');
-      this.showError(response.message ?? 'Registration failed.');
+
+      if (response.errors?.length) {
+        const errorMessage = response.errors
+          .map(error => error.description)
+          .join('\n');
+
+        this.showError(errorMessage);
+        return;
+      }
+
+      this.showError(response.message || 'Registration failed.');
     } catch (error) {
       console.error(error);
       this.showError('Unable to register. Please try again.');
