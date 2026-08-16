@@ -62,6 +62,63 @@
 
       <!-- Form -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-6">
+        <!-- Role Selection -->
+        <div class="form-group">
+          <label class="form-label">
+            I am a...
+          </label>
+
+          <div class="grid grid-cols-2 gap-3">
+
+            <!-- Tenant -->
+            <button type="button" (click)="loginForm.patchValue({ roleId: Role.Tenant })"
+              class="h-[72px] border rounded-[8px] flex flex-col items-center justify-center transition-all" [ngClass]="{
+                                    '!border-[#2563EB] bg-[#EFF6FF]': loginForm.value.roleId === Role.Tenant,
+                                    '!border-red-500': v.isInvalid(loginForm, 'roleId'),
+                                    '!border-[#CBD5E1]':
+                                !v.isInvalid(loginForm, 'roleId') &&
+                                loginForm.value.roleId !== Role.Tenant
+                            }">
+
+              <i class="pi pi-search mb-1" [ngClass]="loginForm.value.roleId === Role.Tenant
+                                        ? 'text-[#2563EB]': 'text-[#64748B]'">
+              </i>
+
+              <span class="text-[12px] font-medium">
+                Looking for Rent
+              </span>
+
+            </button>
+
+            <!-- Owner -->
+            <button type="button" (click)="loginForm.patchValue({ roleId: Role.Owner })"
+              class="h-[72px] border rounded-[8px] flex flex-col items-center justify-center transition-all" [ngClass]="{
+                                    '!border-[#2563EB] bg-[#EFF6FF]': loginForm.value.roleId === Role.Owner,
+                                    '!border-red-500': v.isInvalid(loginForm, 'roleId'),
+                                    '!border-[#CBD5E1]':
+                                    !v.isInvalid(loginForm, 'roleId') &&
+                                    loginForm.value.roleId !== Role.Owner
+                            }">
+
+              <i class="pi pi-home mb-1" [ngClass]="loginForm.value.roleId === Role.Owner
+                                        ? 'text-[#2563EB]' : 'text-[#64748B]'">
+              </i>
+
+              <span class="text-[12px] font-medium">
+                Property Owner
+              </span>
+
+            </button>
+
+          </div>
+
+          @if (v.hasError(loginForm, 'roleId', 'required')) {
+          <small class="form-error">
+            Please select your option.
+          </small>
+          }
+        </div>
+
         <div class="form-group">
           <label for="email" class="form-label">Email Address</label>
           <input pInputText id="email" type="email" formControlName="email" pSize="small" placeholder="abc@gamil.com"
@@ -88,7 +145,7 @@
         <!-- Remember me + Forgot Password -->
         <div class="form-group flex items-center justify-between mt-2">
           <div class="flex items-center gap-2">
-            <p-checkbox formControlName="rememberMe" [binary]="true" inputId="remember" size="small">
+            <p-checkbox formControlName="isRememberMe" [binary]="true" inputId="remember" size="small">
             </p-checkbox>
 
             <label for="remember" class="text-[12px] text-[var(--text-secondary)] cursor-pointer">

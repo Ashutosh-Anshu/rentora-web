@@ -59,7 +59,7 @@ export class Register extends UiStateService {
       ]
     ],
     confirmPassword: ['', [Validators.required]],
-    termsAccepted: [false, Validators.requiredTrue]
+    termsAccepted: [false, Validators.required]
   },
     {
       validators: this.v.passwordMatchValidator()

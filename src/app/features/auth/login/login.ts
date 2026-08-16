@@ -12,6 +12,7 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { CommonModule } from '@angular/common';
+import { Role } from '../../../shared';
 
 @Component({
   selector: 'app-login',
@@ -37,16 +38,17 @@ export class Login extends UiStateService {
   private menuStore = inject(MenuStore);
   private userStore = inject(UserStore);
   private router = inject(Router);
-
+  public Role = Role;
 
   constructor() {
     super();
   }
 
   loginForm: FormGroup = this.fb.group({
+    roleId: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    rememberMe: [false]
+    isRememberMe: [false]
   });
 
 
@@ -79,7 +81,7 @@ export class Login extends UiStateService {
       this.tokenService.setTokens(
         response.data.accessToken,
         response.data.refreshToken,
-        this.loginForm.value.rememberMe
+        this.loginForm.value.isRememberMe
       );
 
       this.userStore.setUser(response.data.user);

@@ -17,8 +17,10 @@ export interface AuthUser {
 }
 
 export interface LoginReq {
+  roleId: string;
   email: string;
   password: string;
+  isRememberMe: boolean;
 }
 
 export interface LoginRes {
