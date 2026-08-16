@@ -62,23 +62,27 @@ export class Login extends UiStateService {
     this.showLoadingPanel();
 
     try {
-      const loginResponse = await firstValueFrom(
+      const response = await firstValueFrom(
         this.authService.login(this.loginForm.value)
       );
 
-      if (!loginResponse.success) {
-        this.showError(loginResponse.message ?? 'Invalid email or password.');
+      if (response.errors?.length) {
+        const errorMessage = response.errors
+          .map(error => error.description)
+          .join('\n');
+
+        this.showError(errorMessage);
         return;
       }
 
       // Save authentication
       this.tokenService.setTokens(
-        loginResponse.data.accessToken,
-        loginResponse.data.refreshToken,
+        response.data.accessToken,
+        response.data.refreshToken,
         this.loginForm.value.rememberMe
       );
 
-      this.userStore.setUser(loginResponse.data.user);
+      this.userStore.setUser(response.data.user);
 
       // Load application menus
       const menuResponse = await firstValueFrom(
