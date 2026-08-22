@@ -71,6 +71,7 @@ export class PropertyAdd {
       addressLine2: [''],
       city: ['', Validators.required],
       state: [null, Validators.required],
+      country: [null, Validators.required],
       zipCode: ['', Validators.required],
 
       units: this.fb.array([this.createUnit(), this.createUnit()]),

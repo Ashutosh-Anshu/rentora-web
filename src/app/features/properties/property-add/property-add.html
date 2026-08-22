@@ -5,7 +5,7 @@
             <a routerLink="/properties"
                 class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 mb-2 transition-colors">
                 <i class="pi pi-arrow-left text-xs"></i>
-                Back to Portfolio
+                Back to Properties
             </a>
             <h1 class="text-2xl font-semibold text-slate-900">Add Property</h1>
         </div>
@@ -26,19 +26,20 @@
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1.5">
                     <label class="form-label">Property Name</label>
-                    <input pInputText formControlName="name" placeholder="e.g. The Grand Residences" class="w-full" />
+                    <input pInputText formControlName="name" placeholder="e.g. The Grand Residences" pSize="small"
+                        class="w-full" />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col gap-1.5">
                         <label class="form-label">Property Type</label>
-                        <p-select formControlName="propertyType" [options]="propertyTypes" optionLabel="label"
-                            optionValue="value" placeholder="Select type" class="w-full"></p-select>
+                        <p-select size="small" formControlName="propertyType" [options]="propertyTypes"
+                            optionLabel="label" optionValue="value" placeholder="Select type" class="w-full"></p-select>
                     </div>
 
                     <div class="flex flex-col gap-1.5">
                         <label class="form-label">Status</label>
-                        <p-select formControlName="statusType" [options]="statusTypes" optionLabel="label"
+                        <p-select size="small" formControlName="statusType" [options]="statusTypes" optionLabel="label"
                             optionValue="value" placeholder="Select type" class="w-full">
                         </p-select>
                     </div>
@@ -46,7 +47,7 @@
 
                 <div class="flex flex-col gap-1.5">
                     <label class="form-label">Description</label>
-                    <textarea pTextarea formControlName="description" rows="3"
+                    <textarea pSize="small" pTextarea formControlName="description" rows="3"
                         placeholder="Brief description of the property..." class="w-full">
                     </textarea>
                 </div>
@@ -64,29 +65,40 @@
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1.5">
                     <label class="form-label">Address Line 1</label>
-                    <input pInputText formControlName="addressLine1" placeholder="Street address" class="w-full" />
+                    <input pSize="small" pInputText formControlName="addressLine1" placeholder="Street address"
+                        class="w-full" />
                 </div>
 
                 <div class="flex flex-col gap-1.5">
                     <label class="form-label">Address Line 2 <span
                             class="text-slate-400 font-normal">(Optional)</span></label>
-                    <input pInputText formControlName="addressLine2" placeholder="Apt, Suite, Bldg" class="w-full" />
+                    <input pSize="small" pInputText formControlName="addressLine2" placeholder="Apt, Suite, Bldg"
+                        class="w-full" />
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col gap-1.5">
                         <label class="form-label">City</label>
-                        <input pInputText formControlName="city" class="w-full" />
+                        <input pSize="small" pInputText formControlName="city" class="w-full" />
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <label class="form-label">State</label>
-                        <p-select formControlName="state" [options]="[]" placeholder="State" class="w-full"></p-select>
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                        <label class="form-label">ZIP Code</label>
-                        <input pInputText formControlName="zipCode" class="w-full" />
+                        <label class="form-label">State / Province</label>
+                        <p-select size="small" formControlName="state" [options]="[]" placeholder="State"
+                            class="w-full"></p-select>
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">ZIP Code</label>
+                        <input pSize="small" pInputText formControlName="zipCode" class="w-full" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">Country</label>
+                        <p-select size="small" formControlName="country" [options]="[]" placeholder="Country"
+                            class="w-full"></p-select>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -111,11 +123,11 @@
             <div formArrayName="units" class="flex flex-col gap-2">
                 <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i"
                     class="grid grid-cols-[1fr_1fr_1.2fr_1fr_auto] gap-3 items-center">
-                    <input pInputText formControlName="unitNo" class="w-full" />
-                    <input pInputText formControlName="floor" class="w-full" />
-                    <p-select formControlName="type" [options]="unitTypes" optionLabel="label" optionValue="value"
-                        placeholder="Type" class="w-full"></p-select>
-                    <p-inputnumber formControlName="baseRent" mode="currency" currency="USD"
+                    <input pSize="small" pInputText formControlName="unitNo" class="w-full" />
+                    <input pSize="small" pInputText formControlName="floor" class="w-full" />
+                    <p-select size="small" formControlName="type" [options]="unitTypes" optionLabel="label"
+                        optionValue="value" placeholder="Type" class="w-full"></p-select>
+                    <p-inputnumber size="small" formControlName="baseRent" mode="currency" currency="USD"
                         class="w-full"></p-inputnumber>
                     <button type="button" (click)="removeUnit(i)" class="text-slate-400 hover:text-red-500 p-2">
                         <i class="pi pi-trash text-sm"></i>
@@ -136,10 +148,14 @@
                 <p class="text-xs text-slate-400 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
             </label>
 
-            <div class="grid grid-cols-3 gap-3 mt-4" *ngIf="imagePreviews().length">
-                <img *ngFor="let src of imagePreviews()" [src]="src"
-                    class="w-full h-24 object-cover rounded-lg border border-slate-200" />
+            @if (imagePreviews().length) {
+            <div class="grid grid-cols-5 gap-3 mt-4">
+                @for (src of imagePreviews(); track src) {
+                <img [src]="src" class="w-full h-24 object-cover rounded-sm border border-slate-200" />
+                }
             </div>
+            }
+
         </section>
 
         <!-- Amenities -->
@@ -147,12 +163,15 @@
             <h2 class="text-base font-semibold text-slate-900 mb-4">Amenities</h2>
 
             <div class="flex flex-wrap gap-2">
-                <button type="button" *ngFor="let amenity of amenityOptions" (click)="toggleAmenity(amenity)"
+                @for (amenity of amenityOptions; track amenity) {
+                <button type="button" (click)="toggleAmenity(amenity)"
                     class="px-3 py-1.5 rounded-full text-sm font-medium border transition-colors" [ngClass]="selectedAmenities().includes(amenity)
-                  ? 'bg-blue-50 border-blue-200 text-blue-700'
-                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'">
+      ? 'bg-blue-50 border-blue-200 text-blue-700'
+      : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'">
                     {{ amenity }}
                 </button>
+                }
+
             </div>
         </section>
 
