@@ -24,23 +24,44 @@ export class App {
   private userService = inject(UserService);
 
   async ngOnInit() {
-    if (this.tokenService.hasToken()) {
-      const userId = this.tokenService.getUserId();
-      const results = await lastValueFrom(
-        forkJoin({
-          user: this.userService.getUserById(userId),
-          menus: this.menuService.getMenus(userId)
-        })
-      );
-
-      this.userStore.setUser(results.user.data);
-      this.menuStore.setMenus(results.menus.data);
-
-    }
-    else {
+    if (!this.tokenService.hasToken()) {
       this.router.navigate(['/']);
+      return;
     }
+
+    const cachedUser = localStorage.getItem('user');
+    const cachedMenus = localStorage.getItem('menus');
+
+    if (cachedUser && cachedMenus) {
+      // Get data from localStorage
+      const user = JSON.parse(cachedUser);
+      const menus = JSON.parse(cachedMenus);
+
+      this.userStore.setUser(user);
+      this.menuStore.setMenus(menus);
+
+      return;
+    }
+
+    // Fetch from API
+    const userId = this.tokenService.getUserId();
+
+    const results = await lastValueFrom(
+      forkJoin({
+        user: this.userService.getUserById(userId),
+        menus: this.menuService.getMenus(userId)
+      })
+    );
+
+    // Store in localStorage
+    localStorage.setItem('user', JSON.stringify(results.user.data));
+    localStorage.setItem('menus', JSON.stringify(results.menus.data));
+
+    // Store in your stores
+    this.userStore.setUser(results.user.data);
+    this.menuStore.setMenus(results.menus.data);
   }
+
 }
 
 

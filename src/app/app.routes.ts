@@ -20,7 +20,7 @@ export const routes: Routes = [
             },
             {
                 path: 'properties',
-                loadComponent: () => import('./features/properties/properties').then(m => m.Properties)
+                loadChildren: () => import('./features/properties/properties.routes').then(m => m.PROPERTIES_ROUTES)
             },
             {
                 path: 'bookings',

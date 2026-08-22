@@ -1,0 +1,160 @@
+<div class="mx-auto">
+
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <a routerLink="/properties"
+                class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 mb-2 transition-colors">
+                <i class="pi pi-arrow-left text-xs"></i>
+                Back to Portfolio
+            </a>
+            <h1 class="text-2xl font-semibold text-slate-900">Add Property</h1>
+        </div>
+
+        <div class="flex gap-3">
+            <p-button label="Cancel" [outlined]="true" severity="secondary" size="small"
+                (onClick)="onCancel()"></p-button>
+            <p-button label="Save Property" icon="pi pi-save" size="small" (onClick)="onSave()"></p-button>
+        </div>
+    </div>
+
+    <form [formGroup]="form" class="flex flex-col gap-6">
+
+        <!-- Basic Information -->
+        <section class="bg-white rounded-sm border border-slate-200 p-6">
+            <h2 class="text-base font-semibold text-slate-900 mb-4">Basic Information</h2>
+
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="form-label">Property Name</label>
+                    <input pInputText formControlName="name" placeholder="e.g. The Grand Residences" class="w-full" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">Property Type</label>
+                        <p-select formControlName="propertyType" [options]="propertyTypes" optionLabel="label"
+                            optionValue="value" placeholder="Select type" class="w-full"></p-select>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">Status</label>
+                        <p-select formControlName="statusType" [options]="statusTypes" optionLabel="label"
+                            optionValue="value" placeholder="Select type" class="w-full">
+                        </p-select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="form-label">Description</label>
+                    <textarea pTextarea formControlName="description" rows="3"
+                        placeholder="Brief description of the property..." class="w-full">
+                    </textarea>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 mt-4">
+                <p-toggleswitch formControlName="includesParking"></p-toggleswitch>
+                <span class="text-sm text-slate-700">Includes Parking</span>
+            </div>
+        </section>
+
+        <!-- Location & Address -->
+        <section class="bg-white rounded-sm border border-slate-200 p-6">
+            <h2 class="text-base font-semibold text-slate-900 mb-4">Location &amp; Address</h2>
+
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="form-label">Address Line 1</label>
+                    <input pInputText formControlName="addressLine1" placeholder="Street address" class="w-full" />
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="form-label">Address Line 2 <span
+                            class="text-slate-400 font-normal">(Optional)</span></label>
+                    <input pInputText formControlName="addressLine2" placeholder="Apt, Suite, Bldg" class="w-full" />
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">City</label>
+                        <input pInputText formControlName="city" class="w-full" />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">State</label>
+                        <p-select formControlName="state" [options]="[]" placeholder="State" class="w-full"></p-select>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="form-label">ZIP Code</label>
+                        <input pInputText formControlName="zipCode" class="w-full" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unit Configuration -->
+        <section class="bg-white rounded-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-semibold text-slate-900">Unit Configuration</h2>
+                <button type="button" (click)="addUnit()"
+                    class="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <i class="pi pi-plus text-xs"></i> Add Unit
+                </button>
+            </div>
+
+            <div class="grid grid-cols-[1fr_1fr_1.2fr_1fr_auto] gap-3 text-xs font-medium text-slate-500 px-1 mb-2">
+                <span>Unit #</span>
+                <span>Floor</span>
+                <span>Type</span>
+                <span>Base Rent</span>
+                <span></span>
+            </div>
+
+            <div formArrayName="units" class="flex flex-col gap-2">
+                <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i"
+                    class="grid grid-cols-[1fr_1fr_1.2fr_1fr_auto] gap-3 items-center">
+                    <input pInputText formControlName="unitNo" class="w-full" />
+                    <input pInputText formControlName="floor" class="w-full" />
+                    <p-select formControlName="type" [options]="unitTypes" optionLabel="label" optionValue="value"
+                        placeholder="Type" class="w-full"></p-select>
+                    <p-inputnumber formControlName="baseRent" mode="currency" currency="USD"
+                        class="w-full"></p-inputnumber>
+                    <button type="button" (click)="removeUnit(i)" class="text-slate-400 hover:text-red-500 p-2">
+                        <i class="pi pi-trash text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Media -->
+        <section class="bg-white rounded-sm border border-slate-200 p-6">
+            <h2 class="text-base font-semibold text-slate-900 mb-4">Media</h2>
+
+            <label
+                class="block border-2 border-dashed border-slate-200 rounded-sm p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 transition-colors">
+                <input type="file" accept="image/*,.svg" multiple class="hidden" (change)="onFilesSelected($event)" />
+                <i class="pi pi-cloud-upload text-2xl text-blue-500 mb-2 block"></i>
+                <span class="text-sm text-blue-600 font-medium">Click to upload or drag and drop</span>
+                <p class="text-xs text-slate-400 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+            </label>
+
+            <div class="grid grid-cols-3 gap-3 mt-4" *ngIf="imagePreviews().length">
+                <img *ngFor="let src of imagePreviews()" [src]="src"
+                    class="w-full h-24 object-cover rounded-lg border border-slate-200" />
+            </div>
+        </section>
+
+        <!-- Amenities -->
+        <section class="bg-white rounded-sm border border-slate-200 p-6">
+            <h2 class="text-base font-semibold text-slate-900 mb-4">Amenities</h2>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="button" *ngFor="let amenity of amenityOptions" (click)="toggleAmenity(amenity)"
+                    class="px-3 py-1.5 rounded-full text-sm font-medium border transition-colors" [ngClass]="selectedAmenities().includes(amenity)
+                  ? 'bg-blue-50 border-blue-200 text-blue-700'
+                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'">
+                    {{ amenity }}
+                </button>
+            </div>
+        </section>
+
+    </form>
+</div>

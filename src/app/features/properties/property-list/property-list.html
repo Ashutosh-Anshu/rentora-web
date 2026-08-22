@@ -1,0 +1,295 @@
+<section class="mb-5 flex flex-row items-center justify-between gap-4">
+    <div>
+        <h2 class="m-0 text-[22px] font-bold leading-tight text-slate-900">
+            Properties
+        </h2>
+
+        <p class="m-0 mt-1 hidden text-xs text-slate-600 sm:block">
+            Manage your properties, units, tenants and property information.
+        </p>
+    </div>
+    <a routerLink="property-add">
+        <p-button label="Add Property" icon="pi pi-plus" size="small"></p-button>
+    </a>
+</section>
+
+<section class="flex w-full gap-3 overflow-x-auto pb-2">
+    @for (stat of stats; track stat.label) {
+    @let styles = getStatStyles(stat);
+
+    <div class="min-h-[68px] min-w-[160px] flex-1 shrink-0
+                   rounded-sm border border-l-4
+                   px-4 py-3 shadow-sm" [ngClass]="styles.card">
+        <div class="mb-1 text-[14px] font-medium leading-tight" [ngClass]="styles.label">
+            {{ stat.label }}
+        </div>
+
+        <div class="text-[24px] font-semibold leading-none" [ngClass]="styles.value">
+            {{ stat.value }}
+        </div>
+    </div>
+    }
+</section>
+
+<section class="mt-3 w-full">
+
+    <div class="flex w-full items-center gap-2 lg:hidden">
+        <div class="flex h-[38px] min-w-0 flex-1 items-center gap-2
+                    rounded-sm
+                    border
+                    border-border
+                    px-3
+                ">
+
+            <i class="
+                        pi
+                        pi-search
+                        shrink-0
+                        text-[13px]
+                        text-slate-500
+                    ">
+            </i>
+
+            <input pInputText type="text" placeholder="Search properties..." class="
+                        !w-full
+                        !border-0
+                        !bg-transparent
+                        !p-0
+                        !text-xs
+                        !text-slate-700
+                        !shadow-none
+                        placeholder:!text-slate-400
+                        focus:!border-0
+                        focus:!outline-none
+                        focus:!ring-0
+                    " />
+
+        </div>
+
+        <button type="button" (click)="openFilters()" aria-label="Open filters" class="
+                    flex
+                    h-[38px]
+                    w-[40px]
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-sm
+                    border
+                    border-slate-200
+                    bg-white
+                    text-slate-600
+                    transition
+                    hover:bg-slate-100
+                ">
+
+            <i class="pi pi-sliders-h text-[14px]"></i>
+
+        </button>
+
+    </div>
+
+    <div class="
+                hidden
+                min-h-[58px]
+                w-full
+                items-center
+                rounded-sm
+                border
+                border-slate-200
+                bg-white
+                px-3
+                shadow-sm
+                lg:flex
+            ">
+
+
+        <!-- ============================================== -->
+        <!-- SEARCH -->
+        <!-- ============================================== -->
+
+        <div class="
+                    flex
+                    min-w-0
+                    flex-1
+                    items-center
+                    gap-2
+                ">
+
+            <i class="
+                        pi
+                        pi-search
+                        shrink-0
+                        text-[13px]
+                        text-slate-600
+                    ">
+            </i>
+
+            <input pInputText type="text" placeholder="Search properties..." class="
+                        !w-full
+                        !border-0
+                        !bg-transparent
+                        !p-0
+                        !text-xs
+                        !text-slate-700
+                        !shadow-none
+                        placeholder:!text-slate-400
+                        focus:!border-0
+                        focus:!outline-none
+                        focus:!ring-0
+                    " />
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <span class="
+                    mx-4
+                    h-7
+                    w-px
+                    shrink-0
+                    bg-slate-200
+                ">
+        </span>
+
+
+        <!-- ============================================== -->
+        <!-- STATUS -->
+        <!-- ============================================== -->
+
+        <div class="
+                    flex
+                    w-[150px]
+                    shrink-0
+                    items-center
+                ">
+
+            <span class="
+                        whitespace-nowrap
+                        text-xs
+                        text-slate-700
+                    ">
+                Status:
+            </span>
+
+            <p-select [options]="statuses" optionLabel="label" optionValue="value" [showClear]="false"
+                (onChange)="onStatusChange($event)" class="min-w-0 flex-1" [pt]="selectPt" />
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <span class="
+                    mx-4
+                    h-7
+                    w-px
+                    shrink-0
+                    bg-slate-200
+                ">
+        </span>
+
+
+        <!-- ============================================== -->
+        <!-- TYPE -->
+        <!-- ============================================== -->
+
+        <div class="
+                    flex
+                    w-[145px]
+                    shrink-0
+                    items-center
+                ">
+
+            <span class="
+                        whitespace-nowrap
+                        text-xs
+                        text-slate-700
+                    ">
+                Type:
+            </span>
+
+            <p-select [options]="types" optionLabel="label" optionValue="value" [showClear]="false"
+                (onChange)="onTypeChange($event)" class="min-w-0 flex-1" [pt]="selectPt" />
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <span class="
+                    mx-4
+                    h-7
+                    w-px
+                    shrink-0
+                    bg-slate-200
+                ">
+        </span>
+
+
+        <!-- ============================================== -->
+        <!-- CITY -->
+        <!-- ============================================== -->
+
+        <div class="
+                    flex
+                    w-[175px]
+                    shrink-0
+                    items-center
+                ">
+
+            <span class="
+                        whitespace-nowrap
+                        text-xs
+                        text-slate-700
+                    ">
+                City:
+            </span>
+
+            <p-multiselect [options]="cities" optionLabel="name" optionValue="code" placeholder="All" [filter]="true"
+                [showClear]="true" [showToggleAll]="true" [maxSelectedLabels]="1" selectedItemsLabel="{0} selected"
+                (onChange)="onCityChange($event)" (onSelectAllChange)="onSelectAllChange($event)" class="min-w-0 flex-1"
+                [pt]="multiSelectPt" />
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <span class="
+                    mx-4
+                    h-7
+                    w-px
+                    shrink-0
+                    bg-slate-200
+                ">
+        </span>
+
+
+        <!-- ============================================== -->
+        <!-- RESET -->
+        <!-- ============================================== -->
+
+        <button type="button" (click)="resetFilters()" class="
+                    flex
+                    shrink-0
+                    items-center
+                    gap-2
+                    border-0
+                    bg-transparent
+                    p-0
+                    text-xs
+                    text-slate-600
+                    transition
+                    hover:text-slate-950
+                ">
+
+            <i class="pi pi-refresh text-[12px]"></i>
+
+            <span>Reset</span>
+
+        </button>
+
+    </div>
+
+</section>
