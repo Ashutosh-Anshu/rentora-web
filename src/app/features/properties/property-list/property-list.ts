@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-property-list',
   standalone: true,
   imports: [
     CommonModule,
+    ProgressBarModule,
     InputTextModule,
     SelectModule,
     MultiSelectModule,
     ButtonModule,
-    RouterLink
+    RouterLink,
+    TableModule,
+    TagModule
   ],
   templateUrl: './property-list.html',
   styleUrl: './property-list.scss',
@@ -301,6 +307,151 @@ export class PropertyList {
       value: 'text-violet-950'
     }
   };
+
+
+  allProperties: PropertyListItem[] = [
+    {
+      id: '1',
+      propertyId: 'BLV-1024',
+      name: 'The Belvedere',
+      image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=100&h=100&fit=crop',
+      type: 'Multifamily',
+      city: 'Chicago',
+      state: 'IL',
+      units: 42,
+      occupancyPercent: 85,
+      status: 'Active',
+      addedDate: '2023-10-12',
+    },
+    {
+      id: '2',
+      propertyId: 'OKP-2055',
+      name: 'Oakhaven Plaza',
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=100&fit=crop',
+      type: 'Commercial',
+      city: 'Evanston',
+      state: 'IL',
+      units: 12,
+      occupancyPercent: 100,
+      status: 'Active',
+      addedDate: '2023-09-04',
+    },
+    {
+      id: '3',
+      propertyId: 'PCT-3301',
+      name: 'Pinecrest Townhomes',
+      image: null,
+      type: 'Multifamily',
+      city: 'Naperville',
+      state: 'IL',
+      units: 24,
+      occupancyPercent: 45,
+      status: 'Maintenance',
+      addedDate: '2023-11-22',
+    },
+    {
+      id: '4',
+      propertyId: 'MPL-1187',
+      name: 'Maple Ridge Apartments',
+      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=100&h=100&fit=crop',
+      type: 'Multifamily',
+      city: 'Aurora',
+      state: 'IL',
+      units: 36,
+      occupancyPercent: 92,
+      status: 'Active',
+      addedDate: '2023-08-15',
+    },
+    {
+      id: '5',
+      propertyId: 'RVW-4402',
+      name: 'Riverview Business Center',
+      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop',
+      type: 'Commercial',
+      city: 'Peoria',
+      state: 'IL',
+      units: 8,
+      occupancyPercent: 62,
+      status: 'Active',
+      addedDate: '2024-01-30',
+    },
+    {
+      id: '6',
+      propertyId: 'SNC-0921',
+      name: 'Sunset Court Villas',
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop',
+      type: 'Villa',
+      city: 'Naperville',
+      state: 'IL',
+      units: 6,
+      occupancyPercent: 33,
+      status: 'Inactive',
+      addedDate: '2023-07-01',
+    },
+    {
+      id: '7',
+      propertyId: 'GRV-1550',
+      name: 'Grovepark Studios',
+      image: null,
+      type: 'Studio',
+      city: 'Chicago',
+      state: 'IL',
+      units: 20,
+      occupancyPercent: 70,
+      status: 'Active',
+      addedDate: '2024-02-18',
+    },
+    {
+      id: '8',
+      propertyId: 'HGT-2789',
+      name: 'Heights PG Residency',
+      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=100&h=100&fit=crop',
+      type: 'PG',
+      city: 'Evanston',
+      state: 'IL',
+      units: 15,
+      occupancyPercent: 100,
+      status: 'Active',
+      addedDate: '2023-12-05',
+    },
+    {
+      id: '9',
+      propertyId: 'WLB-3340',
+      name: 'Willowbrook Commons',
+      image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=100&h=100&fit=crop',
+      type: 'Multifamily',
+      city: 'Aurora',
+      state: 'IL',
+      units: 30,
+      occupancyPercent: 18,
+      status: 'Maintenance',
+      addedDate: '2024-03-10',
+    },
+    {
+      id: '10',
+      propertyId: 'CDR-4471',
+      name: 'Cedar Point Offices',
+      image: null,
+      type: 'Commercial',
+      city: 'Peoria',
+      state: 'IL',
+      units: 10,
+      occupancyPercent: 55,
+      status: 'Inactive',
+      addedDate: '2023-06-27',
+    },
+  ];
+
+  formatDate(dateStr: string): string {
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+  }
+
+  statusSeverity(status: PropertyListItem['status']): 'success' | 'warn' | 'danger' {
+    if (status === 'Active') return 'success';
+    if (status === 'Maintenance') return 'warn';
+    return 'danger';
+  }
+
 
 }
 
