@@ -47,7 +47,6 @@ export class Register extends UiStateService {
     roleId: ['', Validators.required],
     fullName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    phoneNumber: ['', [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]{10}$/)]],
     password: [
       '',
       [
@@ -59,7 +58,6 @@ export class Register extends UiStateService {
       ]
     ],
     confirmPassword: ['', [Validators.required]],
-    termsAccepted: [false, Validators.required]
   },
     {
       validators: this.v.passwordMatchValidator()

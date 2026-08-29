@@ -150,38 +150,17 @@
 
                     </div>
 
-                    <!-- Email + PhoneNumber -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email Address</label>
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
 
-                            <input pInputText id="email" type="email" formControlName="email" pSize="small"
-                                placeholder="abc@gamil.com" class="form-input"
-                                [class.error]="v.isInvalid(registrationForm,'email')" />
+                        <input pInputText id="email" type="email" formControlName="email" pSize="small"
+                            placeholder="abc@gamil.com" class="form-input"
+                            [class.error]="v.isInvalid(registrationForm,'email')" />
 
-                            @if (v.hasError(registrationForm,'email','required')) {
-                            <small class="form-error">Enter a valid email address</small>
-                            }
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phoneNumber" class="form-label">Phone Number</label>
-
-                            <input pInputText id="phoneNumber" type="tel" formControlName="phoneNumber" pSize="small"
-                                placeholder="+91 98765 43210" class="form-input" [class.error]="
-                            v.isInvalid(registrationForm,'phoneNumber')" />
-
-                            @if (v.hasError(registrationForm,'phoneNumber','required')) {
-                            <small class="form-error">Enter your phone number</small>
-                            }
-
-                            @if (v.hasError(registrationForm,'phoneNumber','pattern')) {
-                            <small class="form-error">
-                                Enter a valid 10 digit phone number
-                            </small>
-                            }
-                        </div>
-
+                        @if (v.hasError(registrationForm,'email','required')) {
+                        <small class="form-error">Enter a valid email address</small>
+                        }
                     </div>
 
                     <!-- Password Row -->
@@ -245,25 +224,6 @@
                             </div>
 
                         </div>
-                    </div>
-
-                    <!-- Terms -->
-                    <div class="form-group flex items-start gap-2 mt-2">
-
-                        <p-checkbox formControlName="termsAccepted" [binary]="true" inputId="terms">
-                        </p-checkbox>
-
-                        <label for="terms" class="form-label leading-5">I agree to the
-                            <a href="#" class="text-[#2563EB] hover:underline">
-                                Terms of Service
-                            </a>
-                            and
-                            <a href="#" class="text-[#2563EB] hover:underline">
-                                Privacy Policy
-                            </a>
-                            of Rentora.
-                        </label>
-
                     </div>
 
                     <!-- Submit -->
